@@ -3,135 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Portal | Nugortech IT Ltd</title>
+    <title>Nugortech IT Ltd | Employee Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { 
-            --primary: #FF6B00; /* Logo Orange */
-            --blue: #00A3FF;    /* Logo Blue */
-            --success: #10b981; 
-            --bg: #0f172a; 
-        }
+        :root { --primary: #FF6B00; --blue: #00A3FF; --success: #10b981; --bg: #0f172a; }
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { margin: 0; background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; color: white; }
-        
         .bg-glow { position: absolute; width: 400px; height: 400px; background: var(--blue); filter: blur(120px); opacity: 0.15; z-index: -1; animation: orbit 10s infinite alternate; }
         @keyframes orbit { from { transform: translate(-30%, -30%); } to { transform: translate(30%, 30%); } }
-
-        .glass-card { 
-            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(25px); 
-            border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 400px; 
-            border-radius: 40px; padding: 45px 30px; text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-        }
+        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 400px; border-radius: 40px; padding: 45px 30px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
         .clock { font-size: 48px; font-weight: 800; margin-bottom: 5px; background: linear-gradient(to right, var(--primary), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .date { font-size: 13px; opacity: 0.5; margin-bottom: 35px; text-transform: uppercase; letter-spacing: 3px; }
-
         .input-group { margin-bottom: 25px; text-align: left; }
         label { font-size: 11px; font-weight: 700; color: var(--blue); opacity: 0.7; margin-left: 15px; display: block; margin-bottom: 8px; letter-spacing: 1px; }
-        input { 
-            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); 
-            padding: 16px 20px; border-radius: 18px; color: white; outline: none; transition: 0.3s; font-size: 16px;
-        }
+        input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 16px 20px; border-radius: 18px; color: white; outline: none; transition: 0.3s; font-size: 16px; }
         input:focus { border-color: var(--primary); background: rgba(255,255,255,0.08); box-shadow: 0 0 20px rgba(255, 107, 0, 0.15); }
-
         .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 5px; }
-        .btn { 
-            padding: 18px; border: none; border-radius: 20px; font-weight: 700; cursor: pointer; 
-            transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; color: white;
-        }
-        .btn-in { background: var(--success); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); }
-        .btn-out { background: var(--primary); box-shadow: 0 10px 20px rgba(255, 107, 0, 0.2); }
+        .btn { padding: 18px; border: none; border-radius: 20px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; color: white; }
+        .btn-in { background: var(--success); }
+        .btn-out { background: var(--primary); }
         .btn:hover { transform: translateY(-5px); filter: brightness(1.1); }
-
         #status { margin-top: 25px; font-size: 13px; font-weight: 600; padding: 12px; border-radius: 15px; display: none; background: rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
-
-<div class="bg-glow"></div>
-
-<div class="glass-card">
-    <div style="margin-bottom: 35px;">
-        <img src="https://i.ibb.co/6RRL9HVM/Logo-Final.png" alt="Nugortech IT Logo" style="height: 60px;">
-        <p style="font-size: 10px; opacity: 0.5; margin-top: 5px; letter-spacing: 2px;">DIFFERENT CREATIVE THINK</p>
+    <div class="bg-glow"></div>
+    <div class="glass-card">
+        <div style="margin-bottom: 35px;">
+            <h2 style="margin: 0; font-weight: 800; color: white;">Nugortech IT Ltd</h2>
+            <p style="font-size: 10px; color: var(--primary); font-weight: bold; margin-top: 5px; letter-spacing: 2px;">DIFFERENT CREATIVE THINK</p>
+        </div>
+        <div class="clock" id="clock">00:00:00</div>
+        <div class="date" id="date">Loading...</div>
+        <div class="input-group">
+            <label>EMPLOYEE NAME</label>
+            <input type="text" id="uName" placeholder="Enter Full Name">
+        </div>
+        <div class="input-group" style="margin-bottom: 35px;">
+            <label>EMPLOYEE ID</label>
+            <input type="number" id="uId" placeholder="Enter ID Number">
+        </div>
+        <div class="btn-grid">
+            <button class="btn btn-in" onclick="handleAuth('Check-In')"><i class="fas fa-right-to-bracket"></i> IN</button>
+            <button class="btn btn-out" onclick="handleAuth('Check-Out')"><i class="fas fa-right-from-bracket"></i> OUT</button>
+        </div>
+        <div id="status"></div>
     </div>
-
-    <div class="clock" id="clock">00:00:00</div>
-    <div class="date" id="date">Loading...</div>
-
-    <div class="input-group">
-        <label>EMPLOYEE NAME</label>
-        <input type="text" id="uName" placeholder="Enter Full Name">
-    </div>
-    <div class="input-group" style="margin-bottom: 35px;">
-        <label>EMPLOYEE ID</label>
-        <input type="number" id="uId" placeholder="Enter ID Number">
-    </div>
-
-    <div class="btn-grid">
-        <button class="btn btn-in" id="inB" onclick="handleAuth('Check-In')"><i class="fas fa-right-to-bracket"></i> IN</button>
-        <button class="btn btn-out" id="outB" onclick="handleAuth('Check-Out')"><i class="fas fa-right-from-bracket"></i> OUT</button>
-    </div>
-
-    <div id="status"></div>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
-<script>
-    setInterval(() => {
-        const n = new Date();
-        document.getElementById('clock').innerText = n.toLocaleTimeString('en-US', { hour12: false });
-        document.getElementById('date').innerText = n.toDateString();
-    }, 1000);
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyB-AWYawVDTCAX0_ocZYQMqUI5ZteoDsIg",
-        authDomain: "attendance-sheet-e3b6a.firebaseapp.com",
-        databaseURL: "https://attendance-sheet-e3b6a-default-rtdb.firebaseio.com",
-        projectId: "attendance-sheet-e3b6a",
-        appId: "1:799184024638:web:82a23c732c074d98e80d6f"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
-    const oLat = 23.7604602; const oLon = 90.3566788; const range = 0.15;
-
-    function getDist(lat1, lon1, lat2, lon2) {
-        const R = 6371;
-        const dLat = (lat2-lat1) * Math.PI / 180;
-        const dLon = (lon2-lon1) * Math.PI / 180;
-        const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    }
-
-    function handleAuth(type) {
-        const n = document.getElementById('uName').value;
-        const i = document.getElementById('uId').value;
-        const s = document.getElementById('status');
-        if(!n || !i) { alert("Enter Name & ID"); return; }
-
-        s.style.display = "block"; s.style.color = "#94a3b8"; s.innerText = "⏳ Verifying Location...";
-
-        navigator.geolocation.getCurrentPosition((pos) => {
-            const d = getDist(oLat, oLon, pos.coords.latitude, pos.coords.longitude);
-            if (d <= range) {
-                const today = new Date().toLocaleDateString('en-GB').replace(/\//g, "-");
-                const time = new Date().toLocaleTimeString();
-                const obj = { name: n };
-                if(type === 'Check-In') obj.inTime = time; else obj.outTime = time;
-
-                database.ref('attendance/' + today + '/' + i).update(obj).then(() => {
-                    s.style.color = "#10b981"; s.innerText = "✅ " + type + " Success!";
-                });
-            } else {
-                s.style.color = "#f43f5e"; s.innerText = "❌ Denied! Out of Zone (" + (d*1000).toFixed(0) + "m)";
-            }
-        }, () => { alert("Enable GPS Location!"); }, { enableHighAccuracy: true });
-    }
-</script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script>
+        setInterval(() => { const n = new Date(); document.getElementById('clock').innerText = n.toLocaleTimeString('en-US', { hour12: false }); document.getElementById('date').innerText = n.toDateString(); }, 1000);
+        const firebaseConfig = { apiKey: "AIzaSyB-AWYawVDTCAX0_ocZYQMqUI5ZteoDsIg", authDomain: "attendance-sheet-e3b6a.firebaseapp.com", databaseURL: "https://attendance-sheet-e3b6a-default-rtdb.firebaseio.com", projectId: "attendance-sheet-e3b6a", appId: "1:799184024638:web:82a23c732c074d98e80d6f" };
+        firebase.initializeApp(firebaseConfig); const database = firebase.database();
+        const oLat = 23.7604602; const oLon = 90.3566788; const range = 0.15;
+        function getDist(lat1, lon1, lat2, lon2) { const R = 6371; const dLat = (lat2-lat1) * Math.PI / 180; const dLon = (lon2-lon1) * Math.PI / 180; const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2) * Math.sin(dLon/2); return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); }
+        function handleAuth(type) {
+            const n = document.getElementById('uName').value; const i = document.getElementById('uId').value; const s = document.getElementById('status');
+            if(!n || !i) { alert("Enter Name & ID"); return; }
+            s.style.display = "block"; s.style.color = "#94a3b8"; s.innerText = "⏳ Verifying Location...";
+            navigator.geolocation.getCurrentPosition((pos) => {
+                const d = getDist(oLat, oLon, pos.coords.latitude, pos.coords.longitude);
+                if (d <= range) {
+                    const today = new Date().toLocaleDateString('en-GB').replace(/\//g, "-");
+                    const time = new Date().toLocaleTimeString();
+                    const obj = { name: n }; if(type === 'Check-In') obj.inTime = time; else obj.outTime = time;
+                    database.ref('attendance/' + today + '/' + i).update(obj).then(() => { s.style.color = "#10b981"; s.innerText = "✅ " + type + " Success!"; });
+                } else { s.style.color = "#f43f5e"; s.innerText = "❌ Denied! Out of Zone (" + (d*1000).toFixed(0) + "m)"; }
+            }, () => { alert("Enable GPS Location!"); }, { enableHighAccuracy: true });
+        }
+    </script>
 </body>
 </html>
