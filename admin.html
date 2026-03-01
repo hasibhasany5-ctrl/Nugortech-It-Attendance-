@@ -2,39 +2,81 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Enterprise Analytics | Nugortech IT Ltd</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Console | Nugortech IT Ltd</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
         :root { --p: #FF6B00; --b: #00A3FF; --s: #10b981; --d: #f43f5e; --bg: #0b0f19; --card: rgba(255,255,255,0.03); }
-        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { margin: 0; background: var(--bg); display: flex; color: white; min-height: 100vh; overflow-x: hidden; }
-        .sidebar { width: 280px; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(20px); border-right: 1px solid rgba(255,255,255,0.1); padding: 50px 25px; position: fixed; height: 100vh; }
-        .main { margin-left: 280px; width: calc(100% - 280px); padding: 40px; }
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        body { margin: 0; background: var(--bg); color: white; display: flex; min-height: 100vh; overflow-x: hidden; }
+
+        /* Sidebar UI */
+        .sidebar { width: 300px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(25px); border-right: 1px solid rgba(255,255,255,0.1); padding: 40px 25px; position: fixed; height: 100vh; z-index: 100; display: flex; flex-direction: column; align-items: center; }
+        .logo-box { text-align: center; margin-bottom: 30px; }
+        .logo-text { font-size: 24px; font-weight: 800; margin: 0; }
+        .logo-slogan { font-size: 9px; color: var(--p); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+
+        /* Sidebar Live Clock */
+        .admin-clock { font-size: 32px; font-weight: 800; background: linear-gradient(to right, #fff, var(--b)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px; }
+        .admin-date { font-size: 12px; opacity: 0.5; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; }
+
+        .nav-status { padding: 15px 25px; border-radius: 15px; background: var(--card); border: 1px solid var(--b); color: var(--b); font-weight: 800; width: 100%; text-align: center; font-size: 14px; }
+
+        /* Main Content */
+        .main { margin-left: 300px; width: calc(100% - 300px); padding: 40px; }
         .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 40px; }
-        .card { padding: 25px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; position: relative; }
-        .c-1 { background: linear-gradient(135deg, #00A3FF 0%, #0066FF 100%); } .c-2 { background: linear-gradient(135deg, #00E676 0%, #00C853 100%); color: #003300; } .c-3 { background: linear-gradient(135deg, #FF6B00 0%, #E65100 100%); } .c-4 { background: linear-gradient(135deg, #FF1744 0%, #D50000 100%); }
-        .v { font-size: 32px; font-weight: 800; display: block; } .l { font-size: 11px; font-weight: 700; text-transform: uppercase; opacity: 0.9; }
+        .card { padding: 25px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; text-align: center; }
+        .c-1 { background: linear-gradient(135deg, #00A3FF 0%, #0066FF 100%); }
+        .c-2 { background: linear-gradient(135deg, #00E676 0%, #00C853 100%); color: #003300; }
+        .c-3 { background: linear-gradient(135deg, #FF6B00 0%, #E65100 100%); }
+        .c-4 { background: linear-gradient(135deg, #FF1744 0%, #D50000 100%); }
+        .v { font-size: 32px; font-weight: 800; display: block; }
+        .l { font-size: 11px; font-weight: 700; text-transform: uppercase; opacity: 0.9; }
+
+        /* Dashboard Body */
         .grid-2 { display: grid; grid-template-columns: 2.2fr 1fr; gap: 25px; }
-        .panel { background: var(--card); border: 1px solid rgba(255,255,255,0.1); padding: 35px; border-radius: 35px; backdrop-filter: blur(10px); }
+        .panel { background: var(--card); border: 1px solid rgba(255,255,255,0.1); padding: 30px; border-radius: 35px; backdrop-filter: blur(10px); }
+
         .search { display: grid; grid-template-columns: 1fr 1.5fr auto auto; gap: 12px; margin-bottom: 25px; }
-        input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 12px 18px; border-radius: 12px; color: white; outline: none; }
+        input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 12px 18px; border-radius: 12px; color: white; outline: none; transition: 0.3s; }
+
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th { padding: 15px; font-size: 10px; color: #64748b; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.03); font-weight: 600; font-size: 14px; }
+        td { padding: 18px 15px; border-bottom: 1px solid rgba(255,255,255,0.03); font-weight: 600; font-size: 14px; }
+        
         .badge { padding: 5px 12px; border-radius: 10px; font-size: 11px; font-weight: 800; }
-        .b-in { background: rgba(0, 230, 118, 0.2); color: #00E676; } .b-late { background: #FF1744; color: white; } .b-time { background: var(--b); color: white; }
-        .del-btn { background: none; border: none; color: #f43f5e; cursor: pointer; transition: 0.3s; }
-        .btn { padding: 10px 20px; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; color: white; }
+        .b-late { background: #FF1744; color: white; box-shadow: 0 0 10px rgba(255, 23, 68, 0.4); }
+        .b-time { background: var(--b); color: white; }
+
+        .btn { padding: 12px 20px; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; color: white; transition: 0.3s; }
+        .btn-ex { background: var(--b); }
+        .btn-cl { background: var(--d); }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--b); border-radius: 10px; }
     </style>
 </head>
 <body>
+
 <div class="sidebar">
-    <h2 style="margin:0; font-weight:800;">NUGORTECH IT</h2>
-    <p style="color:var(--p); font-size:9px; font-weight:800; letter-spacing:1px; text-transform: uppercase;">Different Creative Think</p>
-    <div style="margin-top: 50px; color: #00A3FF; font-weight: 800;"><i class="fas fa-chart-pie"></i> LIVE ANALYTICS</div>
+    <div class="logo-box">
+        <h2 class="logo-text">NUGORTECH IT</h2>
+        <p class="logo-slogan">Different Creative Think</p>
+    </div>
+
+    <!-- Live Timer for Admin -->
+    <div class="admin-clock" id="aClock">00:00:00</div>
+    <div class="admin-date" id="aDate">Loading...</div>
+
+    <div class="nav-status">
+        <i class="fas fa-satellite-dish"></i> LIVE ANALYTICS
+    </div>
 </div>
+
 <div class="main">
     <div class="stat-grid">
         <div class="card c-1"><span class="v" id="s1">0</span><span class="l">TOTAL STAFF</span></div>
@@ -42,13 +84,14 @@
         <div class="card c-3"><span class="v" id="s3">0</span><span class="l">LATE TODAY</span></div>
         <div class="card c-4"><span class="v" id="s4">0</span><span class="l">ABSENT TODAY</span></div>
     </div>
+
     <div class="grid-2">
         <div class="panel">
             <div class="search">
-                <input type="text" id="idSearch" placeholder="Search ID/Name..." onkeyup="filter()">
-                <input type="text" id="dateSearch" placeholder="Date (28-02-2026)" onkeyup="filter()">
-                <button class="btn" style="background:var(--b)" onclick="exp()">CSV</button>
-                <button class="btn" style="background:#f43f5e" onclick="wipeAll()"><i class="fas fa-trash-can"></i></button>
+                <input type="text" id="idF" placeholder="Search ID/Name..." onkeyup="runFilter()">
+                <input type="text" id="dtF" placeholder="Date (28-02-2026)" onkeyup="runFilter()">
+                <button class="btn btn-ex" onclick="exp()">CSV</button>
+                <button class="btn btn-cl" onclick="wipe()"><i class="fas fa-trash-can"></i></button>
             </div>
             <div style="max-height: 480px; overflow-y: auto;">
                 <table id="myT">
@@ -66,46 +109,57 @@
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 <script>
+    // Live Sidebar Clock
+    setInterval(() => {
+        const now = new Date();
+        document.getElementById('aClock').innerText = now.toLocaleTimeString('en-US', { hour12: false });
+        document.getElementById('aDate').innerText = now.toDateString();
+    }, 1000);
+
     const firebaseConfig = { apiKey: "AIzaSyB-AWYawVDTCAX0_ocZYQMqUI5ZteoDsIg", authDomain: "attendance-sheet-e3b6a.firebaseapp.com", databaseURL: "https://attendance-sheet-e3b6a-default-rtdb.firebaseio.com", projectId: "attendance-sheet-e3b6a", appId: "1:799184024638:web:82a23c732c074d98e80d6f" };
     firebase.initializeApp(firebaseConfig); const database = firebase.database();
     let donut;
 
     database.ref('attendance').on('value', snap => {
         const tbody = document.getElementById('tbody'); tbody.innerHTML = "";
-        const all = snap.val(); let present = 0, lateCountToday = 0, staff = new Set();
+        const all = snap.val(); let present = 0, late = 0, staff = new Set();
         const tKey = new Date().toLocaleDateString('en-GB').replace(/\//g, "-");
 
         if (all) {
             Object.keys(all).reverse().forEach(date => {
                 Object.keys(all[date]).forEach(id => {
                     const d = all[date][id]; staff.add(id);
-                    let stBadge = `<span class="badge b-time">ON TIME</span>`;
                     
-                    if (d.attendanceStatus === "Late") {
-                        stBadge = `<span class="badge b-late">LATE</span>`;
-                        if(date === tKey) lateCountToday++;
+                    // হার্ড-কোড লজিক: ইন-টাইম চেক করে ল্যাটে বের করা
+                    let isLate = d.attendanceStatus === "Late";
+                    if(d.inTime && !isLate) {
+                        const [time, modifier] = d.inTime.split(' ');
+                        let [hours, minutes] = time.split(':');
+                        if (modifier === 'PM' && hours !== '12') hours = parseInt(hours) + 12;
+                        if (modifier === 'AM' && hours === '12') hours = '00';
+                        if (parseInt(hours) > 9 || (parseInt(hours) === 9 && parseInt(minutes) > 30)) isLate = true;
                     }
-                    
-                    if(date === tKey) present++;
 
-                    tbody.innerHTML += `<tr><td>${date}</td><td style="color:#00A3FF">#${id}</td><td>${d.name}</td><td><span class="badge b-in">${d.inTime||'--'}</span></td><td><span class="badge b-in" style="color:#FF6B00; background:none;">${d.outTime||'--'}</span></td><td>${stBadge}</td><td><button onclick="delOne('${date}','${id}')" class="del-row" style="background:none; border:none; color:#f43f5e; cursor:pointer;"><i class="fas fa-trash-alt"></i></button></td></tr>`;
+                    let stBadge = isLate ? `<span class="badge b-late">LATE</span>` : `<span class="badge b-time">ON TIME</span>`;
+                    if(date === tKey) { present++; if(isLate) late++; }
+
+                    tbody.innerHTML += `<tr><td>${date}</td><td style="color:var(--b)">#${id}</td><td>${d.name}</td><td><span style="color:#10b981">${d.inTime||'--'}</span></td><td><span style="color:var(--p)">${d.outTime||'--'}</span></td><td>${stBadge}</td><td><button onclick="delOne('${date}','${id}')" style="background:none; border:none; color:var(--d); cursor:pointer;"><i class="fas fa-trash-alt"></i></button></td></tr>`;
                 });
             });
         }
-        document.getElementById('s1').innerText = staff.size;
-        document.getElementById('s2').innerText = present;
-        document.getElementById('s3').innerText = lateCountToday;
-        const absToday = Math.max(0, staff.size - present);
-        document.getElementById('s4').innerText = absToday;
-        updateChart(present - lateCountToday, lateCountToday, absToday);
+        document.getElementById('s1').innerText = staff.size; document.getElementById('s2').innerText = present;
+        document.getElementById('s3').innerText = late; document.getElementById('s4').innerText = Math.max(0, staff.size - present);
+        updateChart(present - late, late, Math.max(0, staff.size - present));
     });
 
     function updateChart(p, l, a) { const ctx = document.getElementById('chart').getContext('2d'); if (donut) donut.destroy(); donut = new Chart(ctx, { type: 'doughnut', data: { labels: ['On Time', 'Late', 'Absent'], datasets: [{ data: [p, l, a], backgroundColor: ['#00E676', '#FF1744', 'rgba(255,255,255,0.05)'], borderWidth: 0 }] }, options: { cutout: '85%', plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8' } } } } }); }
-    function filter() { const v1 = document.getElementById('idSearch').value.toUpperCase(), v2 = document.getElementById('dateSearch').value.toUpperCase(), rows = document.getElementById('tbody').getElementsByTagName('tr'); for (let r of rows) { r.style.display = (r.innerText.toUpperCase().includes(v1) && r.innerText.toUpperCase().includes(v2)) ? "" : "none"; } }
-    function exp() { let csv = "\uFEFFDate,ID,Name,In,Out,Status\n"; document.querySelectorAll("#myT tr").forEach((row, i) => { if(i === 0) return; csv += Array.from(row.querySelectorAll("td")).slice(0,6).map(c => c.innerText.replace("#","")).join(",") + "\n"; }); const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' }); const l = document.createElement("a"); l.href = URL.createObjectURL(blob); l.download = "Attendance_Report.csv"; l.click(); }
-    function delOne(d, i) { if(confirm("Delete this?")) database.ref('attendance/'+d+'/'+i).remove(); }
-    function wipeAll() { let p = prompt("Password?"); if(p === "8087") { database.ref('attendance').remove(); alert("Cleared!"); } else { alert("Wrong!"); } }
+    function runFilter() { const v1 = document.getElementById('idF').value.toUpperCase(), v2 = document.getElementById('dtF').value.toUpperCase(), rows = document.getElementById('tbody').getElementsByTagName('tr'); for (let r of rows) { r.style.display = r.innerText.toUpperCase().includes(v1) && r.innerText.toUpperCase().includes(v2) ? "" : "none"; } }
+    function exp() { let csv = "\uFEFFDate,ID,Name,In,Out,Status\n"; document.querySelectorAll("#myT tr").forEach((row, i) => { if(i === 0) return; csv += Array.from(row.querySelectorAll("td")).slice(0,6).map(c => c.innerText.replace("#","")).join(",") + "\n"; }); const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' }); const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "Nugortech_Report.csv"; link.click(); }
+
+    function delOne(d, i) { if(confirm("Delete this entry?")) database.ref('attendance/'+d+'/'+i).remove(); }
+    function wipe() { if(prompt("Enter Admin Password to WIPE ALL DATA:") === "8087") { database.ref('attendance').remove(); alert("Cleared!"); } else { alert("Wrong Password!"); } }
 </script>
 </body>
 </html>
